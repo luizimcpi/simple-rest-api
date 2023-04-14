@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("/health")
+@RestController
 public class HealthController {
 
-    @GetMapping
+    @GetMapping("/health")
     public ResponseEntity<HealthResponse> getHealthStatus(){
-        HealthResponse healthResponse = new HealthResponse("OK - Codando TV");
+        HealthResponse healthResponse = new HealthResponse("Status OK - Codando TV");
         return ResponseEntity.ok(healthResponse);
     }
 }

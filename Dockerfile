@@ -1,19 +1,14 @@
-# Start with a base image containing Java runtime
-FROM openjdk:17
+FROM gradle:7.6.1-jdk17-alpine AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
 
-# Add Maintainer Info
-LABEL maintainer="luizhenrique.se@gmail.com"
-
-# Add a volume pointing to /tmp
-VOLUME /tmp
-
-# The application's jar file
-ARG JAR_FILE=jars/simple-rest-api-*.jar
-
-# Add the application's jar to the container
-ADD ${JAR_FILE} simple-rest-api.jar
+FROM openjdk:17.0.2-jdk-oracle
 
 EXPOSE 8080
 
-# Run the jar file
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/simple-rest-api.jar"]
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/simple-rest-api.jar
+
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/simple-rest-api.jar"]

@@ -31,5 +31,8 @@ docker-compose up
 3. [Baeldung - Java Record](https://www.baeldung.com/java-record-keyword)
 4. [Oracle Java 14 - Records](https://docs.oracle.com/en/java/javase/14/language/records.html)
 
+Configurando a aplicação :clapper:\
+<a href="https://www.youtube.com/watch?v=Ay2NNsX_O5M"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" height="20px"/></a>
+
 
 

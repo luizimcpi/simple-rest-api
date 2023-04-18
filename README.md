@@ -23,6 +23,10 @@ OR
 docker-compose up
 ```
 
+### Shutdown
+```
+docker-compose down -v
+```
 
 ## Links and references
 
@@ -36,3 +40,8 @@ Configurando a aplicação :clapper:\
 
 
 
+## View Logs
+
+Got to [Splunk login](http://localhost:8000) to view the logs.
+
+Login is admin/Splunk1234

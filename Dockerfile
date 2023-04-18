@@ -9,6 +9,6 @@ EXPOSE 8080
 
 RUN mkdir /app
 
-COPY --from=build /home/gradle/src/build/libs/*.jar /app/simple-rest-api.jar
+COPY --from=build /home/gradle/src/build/libs/simple-rest-api-1.0.0.jar /app/simple-rest-api.jar
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom","-jar","/app/simple-rest-api.jar"]

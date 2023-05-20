@@ -34,11 +34,15 @@ docker-compose down -v
 2. [Baeldung - Spring 3](https://www.baeldung.com/spring-boot-3-spring-6-new)
 3. [Baeldung - Java Record](https://www.baeldung.com/java-record-keyword)
 4. [Oracle Java 14 - Records](https://docs.oracle.com/en/java/javase/14/language/records.html)
+5. [Docker](https://www.docker.com/)
+6. [Splunk](https://docs.splunk.com/Documentation)
 
-Configurando a aplicação :clapper:\
+## Videos
+1. Configurando a aplicação :clapper:\
 <a href="https://www.youtube.com/watch?v=Ay2NNsX_O5M"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" height="20px"/></a>
 
-
+2. Docker e Docker-compose :clapper:\
+<a href="https://youtu.be/oLww6H_ekBw"><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white" height="20px"/></a>
 
 ## View Logs
 

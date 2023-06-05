@@ -7,5 +7,37 @@ services:
       context: .
     image: codandotv/simple-rest-api
     container_name: simple-rest-api-app
+    environment:
+      - LOGGING_FILE_NAME=/logs/simple-rest-api.log
     ports:
       - 8080:8080
+    volumes:
+      - log_volume:/logs
+
+  splunk:
+    image: splunk/splunk:8.0
+    hostname: splunk
+    environment:
+      - SPLUNK_START_ARGS=--accept-license
+      - SPLUNK_USER=splunk
+      - SPLUNK_ENABLE_LISTEN=9997
+      - SPLUNK_PASSWORD=Splunk1234
+    ports:
+      - "8000:8000"
+
+  splunkforwarder:
+    image: splunk/universalforwarder:8.0
+    hostname: splunkforwarder
+    environment:
+      - SPLUNK_START_ARGS=--accept-license --answer-yes
+      - SPLUNK_STANDALONE_URL=splunk:9997
+      - SPLUNK_USER=splunk
+      - SPLUNK_ADD=monitor /logs
+      - SPLUNK_PASSWORD=Splunk1234
+    restart: always
+    depends_on:
+      - splunk
+    volumes:
+      - log_volume:/logs
+volumes:
+  log_volume:

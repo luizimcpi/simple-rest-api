@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: simple-rest-api
+
+#logging:
+#  file:
+#    path: .
+#    name: simple-rest-api.log

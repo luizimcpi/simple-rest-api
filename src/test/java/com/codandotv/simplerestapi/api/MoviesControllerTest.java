@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -48,8 +49,13 @@ class MoviesControllerTest {
     ObjectMapper objectMapper;
 
 
-    public static final MovieRequest VALID_MOVIE_REQUEST = new MovieRequest(
+    private static final MovieRequest VALID_MOVIE_REQUEST = new MovieRequest(
             "Star Wars - Clone Wars",
+            "Very old film with Yoda and another heroes",
+            Set.of("Yoda", "Luke Skywalker", "Anakin Skywalker"),
+            2);
+
+    private static final MovieRequest INVALID_MOVIE_REQUEST_WITHOUT_TITLE = new MovieRequest(
             "Very old film with Yoda and another heroes",
             Set.of("Yoda", "Luke Skywalker", "Anakin Skywalker"),
             2);
@@ -94,6 +100,26 @@ class MoviesControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.actors", hasItem("Yoda")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.actors", hasItem("Luke Skywalker")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.actors", hasItem("Anakin Skywalker")));
+    }
+
+    @Test
+    void shouldCreateMovieFailWhenRequestWithoutFieldTitleInRequest() throws Exception {
+
+        String json = objectMapper.writeValueAsString(INVALID_MOVIE_REQUEST_WITHOUT_TITLE);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("errorCode").value((HttpStatus.BAD_REQUEST.value())))
+                .andExpect(MockMvcResultMatchers.jsonPath("status").value((HttpStatus.BAD_REQUEST.name())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors").isArray())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", hasSize(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", hasItem("Field: 'title' Message: Field 'title' not present in payload")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors", hasItem("Field: 'title' Message: Field 'title' can´t be empty")));
     }
 
 }

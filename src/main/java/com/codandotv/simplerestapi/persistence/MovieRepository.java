@@ -1,31 +1,14 @@
 package com.codandotv.simplerestapi.persistence;
 
-
 import com.codandotv.simplerestapi.persistence.entity.Movie;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Optional;
 
 @Component
-public class MovieRepository {
+public interface MovieRepository {
 
-    private Map<Integer, Movie> tempMoviesDb = new HashMap<>();
-    private final AtomicInteger countId = new AtomicInteger(0);
+    Movie save(Movie movie);
 
-    public Movie save(Movie movie){
-        Integer movieId = countId.incrementAndGet();
-        LocalDateTime now = LocalDateTime.now();
-        Movie movieWithId = new Movie(movieId,
-                movie.getTitle(),
-                movie.getDescription(),
-                movie.getActors(),
-                movie.getDuration(),
-                now,
-                now);
-        tempMoviesDb.put(movieId, movieWithId);
-        return movie;
-    }
+    Optional<Movie> findByTitle(String title);
 }

@@ -1,6 +1,7 @@
 package com.codandotv.simplerestapi.persistence;
 
 
+import com.codandotv.simplerestapi.domain.exception.NotFoundException;
 import com.codandotv.simplerestapi.persistence.entity.Movie;
 import org.springframework.stereotype.Component;
 
@@ -44,5 +45,13 @@ public class MovieInMemoryRepository implements MovieRepository {
     @Override
     public List<Movie> findAll() {
         return new ArrayList<>(tempMoviesDb.values());
+    }
+
+    @Override
+    public Movie findById(Integer id) {
+        return new ArrayList<>(tempMoviesDb.values())
+                .stream().filter(m -> m.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NotFoundException("Movie not found"));
     }
 }

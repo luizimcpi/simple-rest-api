@@ -3,6 +3,7 @@ package com.codandotv.simplerestapi.api;
 import com.codandotv.simplerestapi.api.response.HealthResponse;
 import com.codandotv.simplerestapi.api.response.ValidationFieldsResponse;
 import com.codandotv.simplerestapi.domain.exception.NoContentException;
+import com.codandotv.simplerestapi.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -42,5 +43,10 @@ public class GlobalExceptionController {
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity handleNoContentException(NoContentException e){
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity handleNoContentException(NotFoundException e){
+        return ResponseEntity.notFound().build();
     }
 }

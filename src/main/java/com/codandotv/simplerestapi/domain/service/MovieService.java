@@ -26,4 +26,8 @@ public class MovieService {
         if(movies.isEmpty()) throw new NoContentException("Movies list is empty");
         return movieRepository.findAll();
     }
+
+    public Movie findById(Integer id){
+        return movieRepository.findById(id);
+    }
 }

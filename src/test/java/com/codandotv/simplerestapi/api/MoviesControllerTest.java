@@ -2,6 +2,7 @@ package com.codandotv.simplerestapi.api;
 
 import com.codandotv.simplerestapi.api.request.MovieRequest;
 import com.codandotv.simplerestapi.domain.exception.NoContentException;
+import com.codandotv.simplerestapi.domain.exception.NotFoundException;
 import com.codandotv.simplerestapi.domain.service.MovieService;
 import com.codandotv.simplerestapi.persistence.entity.Movie;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -171,6 +172,51 @@ class MoviesControllerTest {
 
         mvc.perform(request)
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    void shouldFindMovieByIdSuccessWhenItIsInDatabase() throws Exception {
+
+        LocalDateTime now = LocalDateTime.now();
+        var mockedMovie = new Movie(
+                1,
+                VALID_MOVIE_REQUEST.title(),
+                VALID_MOVIE_REQUEST.description(),
+                VALID_MOVIE_REQUEST.actors(),
+                VALID_MOVIE_REQUEST.duration(),
+                now,
+                now);
+
+        when(movieService.findById(any())).thenReturn(mockedMovie);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("id").value(mockedMovie.getId().toString()))
+                .andExpect(jsonPath("title").value(mockedMovie.getTitle()))
+                .andExpect(jsonPath("description").value(mockedMovie.getDescription()))
+                .andExpect(jsonPath("duration").value(mockedMovie.getDuration()))
+                .andExpect(jsonPath("$.actors").isArray())
+                .andExpect(jsonPath("$.actors", hasSize(3)))
+                .andExpect(jsonPath("$.actors", hasItem("Yoda")))
+                .andExpect(jsonPath("$.actors", hasItem("Luke Skywalker")))
+                .andExpect(jsonPath("$.actors", hasItem("Anakin Skywalker")));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenNotExistsMovieWithIdInDatabase() throws Exception {
+
+        when(movieService.findById(any())).thenThrow(NotFoundException.class);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/1")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 }

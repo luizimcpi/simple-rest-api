@@ -38,8 +38,7 @@ public class MoviesController {
 
         log.info("Movie has been registered successfully: {}", movie);
 
-        return new ResponseEntity<>(MovieMapper.toResponse(movie), HttpStatus.CREATED);
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movie));
     }
 
 }

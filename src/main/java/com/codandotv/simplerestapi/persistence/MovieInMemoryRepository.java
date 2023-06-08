@@ -29,7 +29,7 @@ public class MovieInMemoryRepository implements MovieRepository {
                 now,
                 now);
         tempMoviesDb.put(movieId, movieWithId);
-        return movie;
+        return movieWithId;
     }
 
     @Override

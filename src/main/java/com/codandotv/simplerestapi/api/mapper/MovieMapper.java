@@ -18,8 +18,4 @@ public final class MovieMapper {
                 movie.getCreatedAt(),
                 movie.getUpdatedAt());
     }
-
-    public static Movie toEntity(MovieRequest request) {
-        return new Movie(request.title(), request.description(), request.actors(), request.duration());
-    }
 }

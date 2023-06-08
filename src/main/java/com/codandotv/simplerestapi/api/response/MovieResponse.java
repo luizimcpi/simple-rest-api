@@ -10,4 +10,9 @@ public record MovieResponse(Integer id,
                             Integer duration,
                             LocalDateTime createdAt,
                             LocalDateTime updatedAt) {
+
+    public MovieResponse() {
+        this(null, null, null, null, null, null, null);
+    }
+
 }

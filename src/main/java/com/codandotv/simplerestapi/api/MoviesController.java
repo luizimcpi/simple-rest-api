@@ -8,6 +8,7 @@ import com.codandotv.simplerestapi.persistence.entity.Movie;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,13 +33,17 @@ public class MoviesController {
     @PostMapping
     public ResponseEntity<MovieResponse> create(@RequestBody @Valid MovieRequest request){
 
-        log.info("Initiating movie registration with request: {}", request);
+        log.info("Initiating movie registration with request: {}", request.toString());
 
-        Movie movie = movieService.save(MovieMapper.toEntity(request));
+        var movie = new Movie();
+        BeanUtils.copyProperties(request, movie);
 
-        log.info("Movie has been registered successfully: {}", movie);
+        log.info("Request converted into entity: {}", movie);
+        Movie savedMovie = movieService.save(movie);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(movie));
+        log.info("Movie has been registered successfully: {}", savedMovie.toString());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(MovieMapper.toResponse(savedMovie));
     }
 
 }

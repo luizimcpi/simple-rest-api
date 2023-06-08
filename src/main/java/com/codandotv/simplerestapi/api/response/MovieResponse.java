@@ -2,8 +2,9 @@ package com.codandotv.simplerestapi.api.response;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
-public record MovieResponse(Integer id,
+public record MovieResponse(UUID id,
                             String title,
                             String description,
                             Set<String> actors,

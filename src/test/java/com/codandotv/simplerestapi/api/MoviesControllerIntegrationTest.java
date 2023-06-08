@@ -61,7 +61,7 @@ public class MoviesControllerIntegrationTest {
         Optional<Movie> movie = movieRepository.findByTitle(VALID_MOVIE_REQUEST.title());
 
         Assertions.assertTrue(movie.isPresent());
-        Assertions.assertEquals(1, movie.get().getId());
+        Assertions.assertNotNull(movie.get().getId());
         Assertions.assertEquals("Star Wars - Clone Wars", movie.get().getTitle());
         Assertions.assertEquals("Very old film with Yoda and another heroes", movie.get().getDescription());
         Assertions.assertEquals(2, movie.get().getDuration());

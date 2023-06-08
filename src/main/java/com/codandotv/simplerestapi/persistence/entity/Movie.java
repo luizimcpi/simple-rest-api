@@ -2,10 +2,11 @@ package com.codandotv.simplerestapi.persistence.entity;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 public class Movie {
 
-    private Integer id;
+    private UUID id;
     private String title;
     private String description;
     private Set<String> actors;
@@ -23,7 +24,7 @@ public class Movie {
         this.duration = duration;
     }
 
-    public Movie(Integer id,
+    public Movie(UUID id,
                  String title,
                  String description,
                  Set<String> actors,
@@ -39,7 +40,7 @@ public class Movie {
         this.updatedAt = updatedAt;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -67,7 +68,7 @@ public class Movie {
         return updatedAt;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

@@ -11,20 +11,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Component
 public class MovieInMemoryRepository implements MovieRepository {
 
-    private Map<Integer, Movie> tempMoviesDb = new HashMap<>();
-    private final AtomicInteger countId = new AtomicInteger(0);
+    private Map<UUID, Movie> tempMoviesDb = new HashMap<>();
 
     @Override
     public Movie save(Movie movie){
-        Integer movieId = countId.incrementAndGet();
         LocalDateTime now = LocalDateTime.now();
-        Movie movieWithId = new Movie(movieId,
+        UUID movieId = UUID.randomUUID();
+        Movie movieWithId = new Movie(
+                movieId,
                 movie.getTitle(),
                 movie.getDescription(),
                 movie.getActors(),
@@ -48,7 +49,7 @@ public class MovieInMemoryRepository implements MovieRepository {
     }
 
     @Override
-    public Movie findById(Integer id) {
+    public Movie findById(UUID id) {
         return new ArrayList<>(tempMoviesDb.values())
                 .stream().filter(m -> m.getId().equals(id))
                 .findFirst()

@@ -7,6 +7,7 @@ import com.codandotv.simplerestapi.persistence.entity.Movie;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class MovieService {
@@ -27,7 +28,7 @@ public class MovieService {
         return movieRepository.findAll();
     }
 
-    public Movie findById(Integer id){
+    public Movie findById(UUID id){
         return movieRepository.findById(id);
     }
 }

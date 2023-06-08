@@ -27,6 +27,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
@@ -76,7 +77,7 @@ class MoviesControllerTest {
 
         LocalDateTime now = LocalDateTime.now();
         var mockedMovie = new Movie(
-                1,
+                UUID.randomUUID(),
                 VALID_MOVIE_REQUEST.title(),
                 VALID_MOVIE_REQUEST.description(),
                 VALID_MOVIE_REQUEST.actors(),
@@ -133,7 +134,7 @@ class MoviesControllerTest {
 
         LocalDateTime now = LocalDateTime.now();
         var mockedMovie = new Movie(
-                1,
+                UUID.randomUUID(),
                 VALID_MOVIE_REQUEST.title(),
                 VALID_MOVIE_REQUEST.description(),
                 VALID_MOVIE_REQUEST.actors(),
@@ -142,7 +143,7 @@ class MoviesControllerTest {
                 now);
 
         var anotherMockedMovie = new Movie(
-                1,
+                UUID.randomUUID(),
                 VALID_MOVIE_REQUEST.title(),
                 VALID_MOVIE_REQUEST.description(),
                 VALID_MOVIE_REQUEST.actors(),
@@ -178,8 +179,9 @@ class MoviesControllerTest {
     void shouldFindMovieByIdSuccessWhenItIsInDatabase() throws Exception {
 
         LocalDateTime now = LocalDateTime.now();
+        var movieId = UUID.randomUUID();
         var mockedMovie = new Movie(
-                1,
+                movieId,
                 VALID_MOVIE_REQUEST.title(),
                 VALID_MOVIE_REQUEST.description(),
                 VALID_MOVIE_REQUEST.actors(),
@@ -189,7 +191,7 @@ class MoviesControllerTest {
 
         when(movieService.findById(any())).thenReturn(mockedMovie);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/1")
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/"+movieId)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 
@@ -211,7 +213,7 @@ class MoviesControllerTest {
 
         when(movieService.findById(any())).thenThrow(NotFoundException.class);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/1")
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.get(URL+"/"+UUID.randomUUID())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON);
 

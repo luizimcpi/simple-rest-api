@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -69,7 +70,7 @@ public class MoviesController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieResponse> findById(@PathVariable("id") Integer id){
+    public ResponseEntity<MovieResponse> findById(@PathVariable("id") UUID id){
 
         log.info("Initiating search movie with id: {}", id);
 

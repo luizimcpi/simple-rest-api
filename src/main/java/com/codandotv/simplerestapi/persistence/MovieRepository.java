@@ -17,4 +17,6 @@ public interface MovieRepository {
     List<Movie> findAll();
 
     Movie findById(UUID id);
+
+    void deleteById(UUID id);
 }

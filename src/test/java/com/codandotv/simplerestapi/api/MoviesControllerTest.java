@@ -5,9 +5,7 @@ import com.codandotv.simplerestapi.domain.exception.NoContentException;
 import com.codandotv.simplerestapi.domain.exception.NotFoundException;
 import com.codandotv.simplerestapi.domain.service.MovieService;
 import com.codandotv.simplerestapi.persistence.entity.Movie;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +30,7 @@ import java.util.UUID;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -219,6 +218,20 @@ class MoviesControllerTest {
 
         mvc.perform(request)
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    void shouldDeleteMovieByIdSuccessWhenItIsInDatabase() throws Exception {
+        var movieId = UUID.randomUUID();
+
+        doNothing().when(movieService).deleteById(any());
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.delete(URL+"/"+movieId)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
 }

@@ -31,4 +31,9 @@ public class MovieService {
     public Movie findById(UUID id){
         return movieRepository.findById(id);
     }
+
+    public void deleteById(UUID id){
+        movieRepository.findById(id);
+        movieRepository.deleteById(id);
+    }
 }

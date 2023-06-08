@@ -55,4 +55,9 @@ public class MovieInMemoryRepository implements MovieRepository {
                 .findFirst()
                 .orElseThrow(() -> new NotFoundException("Movie not found"));
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        tempMoviesDb.remove(id);
+    }
 }

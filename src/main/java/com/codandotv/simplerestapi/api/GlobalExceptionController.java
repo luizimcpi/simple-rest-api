@@ -2,6 +2,7 @@ package com.codandotv.simplerestapi.api;
 
 import com.codandotv.simplerestapi.api.response.HealthResponse;
 import com.codandotv.simplerestapi.api.response.ValidationFieldsResponse;
+import com.codandotv.simplerestapi.domain.exception.NoContentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -35,6 +36,11 @@ public class GlobalExceptionController {
                 HttpStatus.BAD_REQUEST.name(),
                 validationErrors);
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity handleNoContentException(NoContentException e){
+        return ResponseEntity.noContent().build();
     }
 }

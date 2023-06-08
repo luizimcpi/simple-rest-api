@@ -7,9 +7,11 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Component
 public class MovieInMemoryRepository implements MovieRepository {
@@ -37,5 +39,10 @@ public class MovieInMemoryRepository implements MovieRepository {
         return new ArrayList<>(tempMoviesDb.values())
                 .stream().filter(m -> m.getTitle().equals(title))
                 .findFirst();
+    }
+
+    @Override
+    public List<Movie> findAll() {
+        return new ArrayList<>(tempMoviesDb.values());
     }
 }

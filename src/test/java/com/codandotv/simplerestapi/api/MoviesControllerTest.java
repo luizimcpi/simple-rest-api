@@ -234,4 +234,39 @@ class MoviesControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
+    @Test
+    void shouldUpdateMovieSuccessWhenRequestIsValid() throws Exception {
+
+        LocalDateTime now = LocalDateTime.now();
+        var mockedMovie = new Movie(
+                UUID.randomUUID(),
+                VALID_MOVIE_REQUEST.title(),
+                VALID_MOVIE_REQUEST.description(),
+                VALID_MOVIE_REQUEST.actors(),
+                VALID_MOVIE_REQUEST.duration(),
+                now,
+                now);
+
+        when(movieService.update(any(UUID.class), any(Movie.class))).thenReturn(mockedMovie);
+
+        String json = objectMapper.writeValueAsString(VALID_MOVIE_REQUEST);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.put(URL+"/"+UUID.randomUUID())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request)
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(jsonPath("id").value(mockedMovie.getId().toString()))
+                .andExpect(jsonPath("title").value(mockedMovie.getTitle()))
+                .andExpect(jsonPath("description").value(mockedMovie.getDescription()))
+                .andExpect(jsonPath("duration").value(mockedMovie.getDuration()))
+                .andExpect(jsonPath("$.actors").isArray())
+                .andExpect(jsonPath("$.actors", hasSize(3)))
+                .andExpect(jsonPath("$.actors", hasItem("Yoda")))
+                .andExpect(jsonPath("$.actors", hasItem("Luke Skywalker")))
+                .andExpect(jsonPath("$.actors", hasItem("Anakin Skywalker")));
+    }
+
 }

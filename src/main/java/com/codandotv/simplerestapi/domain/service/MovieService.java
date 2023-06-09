@@ -14,7 +14,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
-    public MovieService(MovieInMemoryRepository movieRepository) {
+    public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
     }
 
@@ -33,7 +33,10 @@ public class MovieService {
     }
 
     public void deleteById(UUID id){
-        movieRepository.findById(id);
         movieRepository.deleteById(id);
+    }
+
+    public Movie update(UUID id, Movie movie){
+        return movieRepository.update(id, movie);
     }
 }

@@ -58,6 +58,28 @@ public class MovieInMemoryRepository implements MovieRepository {
 
     @Override
     public void deleteById(UUID id) {
+        this.findById(id);
         tempMoviesDb.remove(id);
+    }
+
+    @Override
+    public Movie update(UUID id, Movie movie) {
+        var savedMovie = this.findById(id);
+        LocalDateTime updatedTime = LocalDateTime.now();
+        Movie updatedMovie = new Movie(
+                savedMovie.getId(),
+                movie.getTitle(),
+                movie.getDescription(),
+                movie.getActors(),
+                movie.getDuration(),
+                savedMovie.getCreatedAt(),
+                updatedTime);
+        tempMoviesDb.put(savedMovie.getId(), updatedMovie);
+        return updatedMovie;
+    }
+
+    @Override
+    public void deleteAll() {
+        tempMoviesDb = new HashMap<>();
     }
 }

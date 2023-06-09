@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,7 +59,7 @@ public class MoviesController {
 
         log.info("Initiating find all movies...");
 
-        List<Movie> movies = movieService.findAll();
+        var movies = movieService.findAll();
 
         log.info("Movies has been found...");
 
@@ -75,7 +76,7 @@ public class MoviesController {
 
         log.info("Initiating search movie with id: {}", id);
 
-        Movie movie = movieService.findById(id);
+        var movie = movieService.findById(id);
 
         log.info("Movies has been found...");
 
@@ -93,6 +94,23 @@ public class MoviesController {
         log.info("Movie with id: {} has been deleted...", id);
 
         return ResponseEntity.noContent().build();
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MovieResponse> deleteById(@PathVariable("id") UUID id,
+                                                    @RequestBody @Valid MovieRequest request){
+
+        log.info("Updating movie with id: {} and using request: {}", id, request);
+
+        var movie = new Movie();
+        BeanUtils.copyProperties(request, movie);
+
+        var updatedMovie = movieService.update(id, movie);
+
+        log.info("Movie with id: {} has been updated...", id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(MovieMapper.toResponse(updatedMovie));
 
     }
 
